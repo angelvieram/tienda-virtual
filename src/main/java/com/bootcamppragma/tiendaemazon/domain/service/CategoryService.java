@@ -3,6 +3,9 @@ package com.bootcamppragma.tiendaemazon.domain.service;
 import com.bootcamppragma.tiendaemazon.domain.model.Category;
 import com.bootcamppragma.tiendaemazon.infrastructure.adapter.persistence.CategoryJpaEntity;
 import com.bootcamppragma.tiendaemazon.infrastructure.adapter.persistence.CategoryJpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +44,19 @@ public class CategoryService {
         return entity.map(e -> new Category(e.getId(), e.getName(), e.getDescription()));
     }
 
-    public List<Category> getAllCategories() {
-        return categoryJpaRepository.findAll().stream()
+    public List<Category> getAllCategories(int page, int size, String sortDirection, String sortBy) {
+        // Configurar el tipo de ordenación
+        Sort sort = Sort.by(Sort.Order.by(sortBy));
+        if ("desc".equalsIgnoreCase(sortDirection)) {
+            sort = sort.descending();
+        }
+
+        // Configurar la paginación
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<CategoryJpaEntity> categoryPage = categoryJpaRepository.findAll(pageRequest);
+
+        // Convertir a lista de dominio
+        return categoryPage.stream()
                 .map(e -> new Category(e.getId(), e.getName(), e.getDescription()))
                 .collect(Collectors.toList());
     }

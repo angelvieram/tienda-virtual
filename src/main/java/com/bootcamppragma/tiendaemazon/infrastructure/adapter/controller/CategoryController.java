@@ -34,8 +34,12 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
+    public ResponseEntity<List<Category>> getAllCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(defaultValue = "name") String sortBy) {
+        List<Category> categories = categoryService.getAllCategories(page, size, sortDirection, sortBy);
         return ResponseEntity.ok(categories);
     }
 
