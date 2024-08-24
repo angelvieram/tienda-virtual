@@ -14,10 +14,16 @@ public class CategoryJpaAdapter implements SaveCategoryPort {
 
     @Override
     public Category saveCategory(Category category) {
+        // Convertir el objeto de dominio a entidad JPA
         CategoryJpaEntity entity = new CategoryJpaEntity();
         entity.setName(category.getName());
         entity.setDescription(category.getDescription());
+
+        // Guardar la entidad en la base de datos
         CategoryJpaEntity savedEntity = categoryJpaRepository.save(entity);
+
+        // Convertir la entidad JPA guardada de vuelta a un objeto de dominio
         return new Category(savedEntity.getId(), savedEntity.getName(), savedEntity.getDescription());
     }
 }
+

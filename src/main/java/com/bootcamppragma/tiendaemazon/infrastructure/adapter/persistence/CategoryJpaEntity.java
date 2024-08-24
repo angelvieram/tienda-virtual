@@ -1,6 +1,5 @@
 package com.bootcamppragma.tiendaemazon.infrastructure.adapter.persistence;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +23,5 @@ public class CategoryJpaEntity {
     @Column(length = 90)
     private String description;
 }
+
 
